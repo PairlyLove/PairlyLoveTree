@@ -105,6 +105,24 @@
   </style>
 </head>
 <body>
+  <!-- LOADING -->
+<div id="loading" style="
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:linear-gradient(135deg,#ffd6e8,#fff1f7);
+  z-index:9999;
+  transition:opacity .8s ease;
+">
+  <div style="font-size:42px;">💞</div>
+  <div style="margin-top:14px;color:#a83b6a;font-size:18px;">
+    Pairly hazırlanıyor...
+  </div>
+</div>
+
 
   <!-- AUDIO -->
 <audio id="bgMusic" src="music.mp3" preload="auto"></audio>
@@ -125,6 +143,15 @@
   </div>
 
   <script>
+    // LOADING KAPATMA
+window.addEventListener('load', () => {
+  const loading = document.getElementById('loading');
+  setTimeout(() => {
+    loading.style.opacity = 0;
+    setTimeout(() => loading.remove(), 800);
+  }, 1200);
+});
+
     /* ====== PERSONAL CONFIG ====== */
     // URL'den isim alma (?a=Ömer&b=Elif)
     const params = new URLSearchParams(window.location.search);
