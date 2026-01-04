@@ -1,245 +1,205 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pairly</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html { width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pairly</title>
 
-    /* --- CONFIGURABLE THEME --- */
-    body {
-      background: linear-gradient(135deg, #ffd6e8, #fff1f7);
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;font-family:Segoe UI,sans-serif;overflow:hidden}
 
-    .center {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      transition: opacity .6s ease;
-    }
+body{
+  background:linear-gradient(135deg,#ffd6e8,#fff1f7);
+}
 
-    h1 { color: #a83b6a; margin-bottom: 16px; }
-    p { color: #7a2d4d; margin-top: 14px; }
-
-    button {
-      padding: 14px 28px;
-      border-radius: 999px;
-      border: none;
-      background: #ff5fa2;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,.15);
-      transition: transform .2s ease;
-    }
-    button:hover { transform: scale(1.05); }
-
-    /* Hearts */
-    .heart {
-      position: absolute;
-      font-size: 20px;
-      animation: float 4s linear forwards;
-      opacity: 0.8;
-    }
-    @keyframes float {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
-    }
-
-    /* Gallery */
-    .gallery {
-      position: absolute;
-      inset: 0;
-      display: none;
-      background: #fff;
-      overflow: hidden;
-    }
-
-    .photo {
-      position: absolute;
-      width: 180px;
-      animation: fall 6s linear forwards;
-      text-align: center;
-    }
-
-    .photo img {
-      width: 100%;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-    }
-
-    .date {
-      margin-top: 6px;
-      font-size: 14px;
-      color: #555;
-    }
-
-    @keyframes fall {
-      from { transform: translateY(-30vh); }
-      to { transform: translateY(120vh); }
-    }
-
-    /* Final screen */
-    .final {
-      position: absolute;
-      inset: 0;
-      display: none;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .final-message {
-      position: absolute;
-      bottom: 15%;
-      width: 100%;
-      text-align: center;
-      font-size: 28px;
-      color: white;
-      text-shadow: 0 4px 20px rgba(0,0,0,.6);
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-  </style>
-</head>
-<body>
-  <!-- LOADING -->
-<div id="loading" style="
+/* LOADING */
+#loading{
   position:fixed;
   inset:0;
   display:flex;
-  align-items:center;
-  justify-content:center;
   flex-direction:column;
+  justify-content:center;
+  align-items:center;
   background:linear-gradient(135deg,#ffd6e8,#fff1f7);
-  z-index:9999;
-  transition:opacity .8s ease;
-">
-  <div style="font-size:42px;">💞</div>
-  <div style="margin-top:14px;color:#a83b6a;font-size:18px;">
-    Pairly hazırlanıyor...
-  </div>
+  z-index:999;
+  transition:.8s;
+}
+#loading span{font-size:42px}
+#loading p{margin-top:12px;color:#a83b6a}
+
+/* START */
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+h1{color:#a83b6a;margin-bottom:16px}
+button{
+  padding:14px 28px;
+  border:none;
+  border-radius:999px;
+  background:#ff5fa2;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+/* HEARTS */
+.heart{
+  position:absolute;
+  animation:float 4s linear forwards;
+}
+@keyframes float{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-120vh);opacity:0}
+}
+
+/* GALLERY */
+.gallery{
+  position:absolute;
+  inset:0;
+  display:none;
+}
+.photo{
+  position:absolute;
+  width:180px;
+  animation:fall 6s linear forwards;
+  text-align:center;
+}
+.photo img{
+  width:100%;
+  border-radius:14px;
+}
+.date{margin-top:6px;font-size:14px;color:#555}
+
+@keyframes fall{
+  from{transform:translateY(-30vh)}
+  to{transform:translateY(120vh)}
+}
+
+/* FINAL */
+.final{
+  position:absolute;
+  inset:0;
+  display:none;
+  background-size:cover;
+  background-position:center;
+}
+.final-message{
+  position:absolute;
+  bottom:15%;
+  width:100%;
+  text-align:center;
+  font-size:28px;
+  color:white;
+  opacity:0;
+  transition:1s;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loading">
+  <span>💞</span>
+  <p>Pairly hazırlanıyor...</p>
 </div>
 
+<audio id="bgMusic" src="music.mp3"></audio>
 
-  <!-- AUDIO -->
-<audio id="bgMusic" src="music.mp3" preload="auto"></audio>
+<div class="center" id="startScreen">
+  <h1>Pairly 💞</h1>
+  <button id="startBtn">Tıkla</button>
+  <p id="subtitle"></p>
+</div>
 
-<!-- START SCREEN -->
-  <div class="center" id="startScreen">
-    <h1>Pairly 💞</h1>
-    <button id="startBtn">Tıkla</button>
-    <p id="subtitle"></p>
-  </div>
+<div class="gallery" id="gallery"></div>
 
-  <!-- GALLERY -->
-  <div class="gallery" id="gallery"></div>
+<div class="final" id="finalScreen">
+  <div class="final-message" id="finalMessage"></div>
+</div>
 
-  <!-- FINAL -->
-  <div class="final" id="finalScreen">
-    <div class="final-message" id="finalMessage"></div>
-  </div>
-
-  <script>
-    // LOADING KAPATMA
-window.addEventListener('DOMContentLoaded', () => {
-  const loading = document.getElementById('loading');
-  setTimeout(() => {
-    loading.style.opacity = 0;
-    setTimeout(() => loading.remove(), 800);
-  }, 1200);
+<script>
+/* LOADING */
+window.addEventListener("DOMContentLoaded",()=>{
+  setTimeout(()=>{
+    document.getElementById("loading").style.opacity=0;
+    setTimeout(()=>document.getElementById("loading").remove(),800);
+  },1200);
 });
 
-    /* ====== PERSONAL CONFIG ====== */
-    // URL'den isim alma (?a=Ömer&b=Elif)
-    const params = new URLSearchParams(window.location.search);
-    const personA = params.get('a') || "Emre";
-    const personB = params.get('b') || "Yasuo";
+/* URL İSİMLER */
+const params=new URLSearchParams(window.location.search);
+const A=params.get("a")||"Emre";
+const B=params.get("b")||"Yasuo";
+document.getElementById("subtitle").innerText=`${A} ve ${B}'nin sevgi dolu anları`;
+document.title=`${A} ❤️ ${B} | Pairly`;
 
-    document.title = `${personA} ❤️ ${personB} | Pairly`;
-
-// bu fotolar değişeicek//
-    const photos = [
-  { src: "foto1.jpg", date: "14.02.2024" },
-  { src: "foto2.jpg", date: "01.06.2024" },
-  { src: "foto3.jpg", date: "10.09.2024" }
+/* FOTOĞRAFLAR */
+const photos=[
+  {src:"foto1.jpg",date:"14.02.2024"},
+  {src:"foto2.jpg",date:"01.06.2024"},
+  {src:"foto3.jpg",date:"10.09.2024"}
 ];
 
-    ];
+const finalPhoto="foto4.jpg";
+const finalText=`${A} ❤️ ${B}`;
 
-    const finalPhoto = "https://foto4.jpg/1200/800";
-    const finalText = `${personA} ❤️ ${personB} \n Sonsuza kadar Yasuo ve Emre.`;
+/* BAŞLAT */
+document.getElementById("startBtn").onclick=()=>{
+  const music=document.getElementById("bgMusic");
+  music.volume=0.7;
+  music.play().catch(()=>{});
+  document.getElementById("startScreen").style.display="none";
+  hearts();
+  setTimeout(showGallery,1200);
+};
 
-    /* ====== INIT ====== */
-    const subtitle = document.getElementById('subtitle');
-    subtitle.innerText = `${personA} ve ${personB}'nin sevgi dolu anları`;
+function hearts(){
+  for(let i=0;i<20;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.bottom="-20px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  }
+}
 
-    const startBtn = document.getElementById('startBtn');
-    const startScreen = document.getElementById('startScreen');
-    const gallery = document.getElementById('gallery');
-    const finalScreen = document.getElementById('finalScreen');
-    const finalMessage = document.getElementById('finalMessage');
+function showGallery(){
+  const g=document.getElementById("gallery");
+  g.style.display="block";
+  let i=0;
+  const w=setInterval(()=>{
+    const p=photos[i%photos.length];
+    const d=document.createElement("div");
+    d.className="photo";
+    d.style.left=Math.random()*80+"vw";
+    d.innerHTML=`<img src="${p.src}"><div class="date">${p.date}</div>`;
+    g.appendChild(d);
+    setTimeout(()=>d.remove(),8000);
+    i++;
+    if(i>15)clearInterval(w);
+  },500);
+  setTimeout(showFinal,8000);
+}
 
-    startBtn.onclick = () => {
-      const music = document.getElementById('bgMusic');
-      music.volume = 70;
-      music.play();
-      startScreen.style.opacity = 0;
-      spawnHearts();
-      setTimeout(showGallery, 1200);
-    };
+function showFinal(){
+  const f=document.getElementById("finalScreen");
+  f.style.display="block";
+  f.style.backgroundImage=`url(${finalPhoto})`;
+  setTimeout(()=>{
+    const m=document.getElementById("finalMessage");
+    m.innerText=finalText;
+    m.style.opacity=1;
+  },1500);
+}
+</script>
 
-    function spawnHearts() {
-      for (let i = 0; i < 25; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerText = '❤️';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.bottom = '-20px';
-        heart.style.animationDelay = Math.random() * 1 + 's';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-      }
-    }
-
-    function showGallery() {
-      startScreen.style.display = 'none';
-      gallery.style.display = 'block';
-
-      let dropCount = 0;
-      const maxDrops = 18; // şelale yoğunluğu
-
-      const waterfall = setInterval(() => {
-        const p = photos[dropCount % photos.length];
-        const div = document.createElement('div');
-        div.className = 'photo';
-        div.style.left = Math.random() * 80 + 'vw';
-        div.style.animationDuration = 5 + Math.random() * 3 + 's';
-
-        div.innerHTML = `<img src="${p.src}" /><div class="date">${p.date}</div>`;
-        gallery.appendChild(div);
-
-        setTimeout(() => div.remove(), 9000);
-        dropCount++;
-
-        if (dropCount >= maxDrops) clearInterval(waterfall);
-      }, 500);
-
-      setTimeout(showFinal, 8000);
-    }
-
-    function showFinal() {
-      gallery.style.display = 'none';
-      finalScreen.style.display = 'block';
-      finalScreen.style.backgroundImage = `url('${finalPhoto}')`;
-
-      setTimeout(() => {
-        finalMessage.innerText = finalText;
-        finalMessage.style.opacity = 1;
-      }, 1500);
-    }
-  </script>
 </body>
 </html>
